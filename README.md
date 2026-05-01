@@ -27,7 +27,7 @@ A modern movie discovery web application built with React, TypeScript, and TMDB 
 
 
 ## 🌐 Live Demo
-https://github.com/Nisren/cinescope.git
+
 
 
 ## 📌 Author
