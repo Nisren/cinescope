@@ -4,13 +4,13 @@ A modern movie discovery web application built with React, TypeScript, and TMDB 
 
 ## 🚀 Features
 
-* 🔥 Trending movies
-* 🔍 Search with debounce
-* 🎬 Movie details page
-* 🎥 Trailer integration (YouTube)
-* ❤️ Favorites system (localStorage)
-* ⚡ Fast and responsive UI
-* 🎨 Modern UI with Tailwind CSS
+- Trending movies with pagination (Load More)
+- Search with debounce
+- Movie details page
+- Trailer integration
+- Favorites system
+- Loading skeleton
+- Error handling with retry
 
 ## 🛠️ Tech Stack
 

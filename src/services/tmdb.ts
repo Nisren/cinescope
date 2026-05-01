@@ -1,17 +1,20 @@
 const BASE_URL = "https://api.themoviedb.org/3";
 
 const TOKEN = import.meta.env.VITE_TMDB_ACCESS_TOKEN;
-console.log("TOKEN:", TOKEN);
 
 const headers = {
   Authorization: `Bearer ${TOKEN}`,
   "Content-Type": "application/json",
 };
 
-export async function getTrendingMovies() {
-  const response = await fetch(`${BASE_URL}/trending/movie/week`, {
-    headers,
-  });
+// 🔥 Trending Movies (مع pagination)
+export async function getTrendingMovies(page = 1) {
+  const response = await fetch(
+    `${BASE_URL}/trending/movie/week?page=${page}`,
+    {
+      headers,
+    }
+  );
 
   if (!response.ok) {
     throw new Error("Failed to fetch trending movies");
@@ -21,6 +24,7 @@ export async function getTrendingMovies() {
   return data.results;
 }
 
+// 🔍 Search
 export async function searchMovies(query: string) {
   const response = await fetch(
     `${BASE_URL}/search/movie?query=${encodeURIComponent(query)}`,
@@ -37,6 +41,7 @@ export async function searchMovies(query: string) {
   return data.results;
 }
 
+// 🎬 Details
 export async function getMovieDetails(id: string) {
   const response = await fetch(`${BASE_URL}/movie/${id}`, {
     headers,
@@ -48,6 +53,8 @@ export async function getMovieDetails(id: string) {
 
   return response.json();
 }
+
+// 🎥 Videos (Trailer)
 export async function getMovieVideos(id: string) {
   const response = await fetch(`${BASE_URL}/movie/${id}/videos`, {
     headers,

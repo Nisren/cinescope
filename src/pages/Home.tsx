@@ -4,14 +4,20 @@ import MovieCard from "../components/MovieCard";
 import { getTrendingMovies, searchMovies } from "../services/tmdb";
 import type { Movie } from "../types/movie";
 import { useDebounce } from "../hooks/useDebounce";
+import MovieCardSkeleton from "../components/MovieCardSkeleton";
 
 function Home() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [query, setQuery] = useState("");
+  const [page, setPage] = useState(1);
 
   const debouncedQuery = useDebounce(query, 500);
+
+  useEffect(() => {
+    setPage(1);
+  }, [debouncedQuery]);
 
   useEffect(() => {
     async function fetchMovies() {
@@ -20,8 +26,13 @@ function Home() {
         setError(null);
 
         if (debouncedQuery.trim() === "") {
-          const data = await getTrendingMovies();
-          setMovies(data);
+          const data = await getTrendingMovies(page);
+
+          if (page === 1) {
+            setMovies(data);
+          } else {
+            setMovies((prev) => [...prev, ...data]);
+          }
         } else {
           const data = await searchMovies(debouncedQuery);
           setMovies(data);
@@ -34,7 +45,7 @@ function Home() {
     }
 
     fetchMovies();
-  }, [debouncedQuery]);
+  }, [debouncedQuery, page]);
 
   return (
     <main className="min-h-screen bg-slate-950 text-white">
@@ -53,12 +64,35 @@ function Home() {
           {query ? `Search results for "${query}"` : "Trending Movies 🔥"}
         </h2>
 
-        {loading && <p className="text-slate-400">Loading movies...</p>}
+        {loading && (
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
+            {Array.from({ length: 8 }).map((_, index) => (
+              <MovieCardSkeleton key={index} />
+            ))}
+          </div>
+        )}
 
-        {error && <p className="text-red-400">{error}</p>}
+        {error && (
+          <div className="rounded-2xl border border-red-500/20 bg-red-500/10 p-6 text-center">
+            <p className="text-red-300">{error}</p>
+
+            <button
+              onClick={() => window.location.reload()}
+              className="mt-4 rounded-full bg-red-600 px-6 py-3 font-semibold text-white transition hover:bg-red-500"
+            >
+              Try Again
+            </button>
+          </div>
+        )}
 
         {!loading && !error && movies.length === 0 && (
-          <p className="mt-10 text-center text-slate-400">No movies found 😢</p>
+          <div className="mt-12 rounded-2xl border border-white/10 bg-slate-900 p-10 text-center">
+            <p className="text-5xl">🎬</p>
+            <h3 className="mt-4 text-2xl font-bold">No movies found</h3>
+            <p className="mt-2 text-slate-400">
+              Try searching for another movie title.
+            </p>
+          </div>
         )}
 
         {!loading && !error && movies.length > 0 && (
@@ -66,6 +100,17 @@ function Home() {
             {movies.map((movie) => (
               <MovieCard key={movie.id} movie={movie} />
             ))}
+          </div>
+        )}
+
+        {!loading && !error && movies.length > 0 && !debouncedQuery && (
+          <div className="mt-10 flex justify-center">
+            <button
+              onClick={() => setPage((prev) => prev + 1)}
+              className="rounded-full bg-red-600 px-8 py-3 font-semibold text-white transition hover:bg-red-500"
+            >
+              Load More
+            </button>
           </div>
         )}
       </section>
