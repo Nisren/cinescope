@@ -1,6 +1,7 @@
 const BASE_URL = "https://api.themoviedb.org/3";
 
 const TOKEN = import.meta.env.VITE_TMDB_ACCESS_TOKEN;
+console.log("TOKEN:", TOKEN);
 
 const headers = {
   Authorization: `Bearer ${TOKEN}`,
