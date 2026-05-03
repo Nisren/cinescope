@@ -26,9 +26,6 @@ A modern movie discovery web application built with React, TypeScript, and TMDB 
 ![Details](./screenshots/details.png)
 
 
-## 🌐 Live Demo
-https://cinescope-ewi.pages.dev/
-
 ## 📌 Author
 
 Nisrein Falwat
