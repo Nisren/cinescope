@@ -27,8 +27,7 @@ A modern movie discovery web application built with React, TypeScript, and TMDB 
 
 
 ## 🌐 Live Demo
-https://cinescope-cyan.vercel.app
-
+https://cinescope.nisrenkh822.workers.dev/
 
 ## 📌 Author
 
